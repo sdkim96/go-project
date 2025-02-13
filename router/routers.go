@@ -1,18 +1,26 @@
-package router
+package routers
 
 import (
+	"sdkim-go-project/internal/controllers"
+
 	"github.com/gin-gonic/gin"
 )
 
-func SetupRouter() *gin.Engine {
-	r := gin.Default()
-
-	// Define your routes and handlers here
-	r.GET("/ping", func(c *gin.Context) {
-		c.JSON(200, gin.H{
-			"message": "pong",
-		})
+func GetHealth(ctx *gin.Context) {
+	ctx.JSON(200, gin.H{
+		"message": "I'm healthy!",
 	})
+}
 
-	return r
+func SetupRouter() *gin.Engine {
+	router := gin.Default()
+
+	public := router.Group("/api")
+	{
+		public.GET("/", GetHealth)
+		public.GET("/me", controllers.GetMe)
+	}
+
+	return router
+
 }
